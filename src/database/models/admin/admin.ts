@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
 
-const projectSchema = new Schema({
+const adminSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -15,9 +15,13 @@ const projectSchema = new Schema({
   finishedOrders: {
     type: [],
   },
+  id: {
+    type: String,
+    required: false,
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const Project = model("Project", projectSchema, "projects");
+const Admin = model("Admin", adminSchema, "admin");
 
-export default Project;
+export default Admin;

@@ -9,17 +9,17 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-  id: {
+  quantity: {
     type: String,
     required: false,
   },
-  quantity: {
+  image: {
     type: String,
     required: false,
   },
 });
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const Contact = model("Product", productSchema, "products");
+const Contact = model("Product", productSchema, "Products");
 
 export default Contact;

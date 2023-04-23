@@ -1,8 +1,9 @@
 const routes = {
-  projectsRouter: "/products",
-  loadProjects: "/loadAll",
+  productsRouter: "/products",
+  loadProducts: "/loadAll",
   adminRouter: "/admin",
   login: "/login",
+  checkout: "/checkout",
 };
 
 export default routes;
