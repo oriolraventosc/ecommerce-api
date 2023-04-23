@@ -144,3 +144,22 @@ export const cancelOrder = async (
     next(customError);
   }
 };
+
+export const loadPendingOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const admin = await Admin.findOne({ username: "admin" });
+    res.status(200).json(admin);
+    debug(`${admin.username} data found`);
+  } catch {
+    const customError = new CustomError(
+      "Error loading data...",
+      500,
+      "Error loading data..."
+    );
+    next(customError);
+  }
+};
