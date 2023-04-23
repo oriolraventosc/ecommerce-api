@@ -4,6 +4,8 @@ const routes = {
   adminRouter: "/admin",
   login: "/login",
   checkout: "/checkout",
+  acceptOrder: "/accept-order/:id",
+  cancelOrder: "/cancel-order/:id",
 };
 
 export default routes;
