@@ -22,3 +22,11 @@ export interface CheckoutData {
   email: string;
   pendingProducts: Product[];
 }
+
+export interface AdminData {
+  username: string;
+  password: string;
+  id: string;
+  pendingOrders: Product[];
+  finishedOrders: Product[];
+}

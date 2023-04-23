@@ -8,7 +8,13 @@ import Admin from "../../../database/models/admin/admin";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import enviroment from "../../../loadEnviroment";
-import { adminLogin } from "./adminController";
+import {
+  acceptOrder,
+  adminLogin,
+  loadPendingOrders,
+  cancelOrder,
+} from "./adminController";
+import adminData from "../../../mocks/adminMock";
 
 let server: MongoMemoryServer;
 
@@ -160,6 +166,113 @@ describe("Given a adminController", () => {
       await adminLogin(req as Request, res as Response, next as NextFunction);
 
       expect(next).toHaveBeenCalledWith(customError);
+    });
+  });
+
+  describe("When loadPendingOrders is invoked with admin data", () => {
+    test("Then it should return a 200 status", async () => {
+      const status = 200;
+      const req: Partial<Request> = {};
+
+      Admin.findOne = jest.fn().mockReturnValue(adminData);
+      await loadPendingOrders(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(status);
+    });
+  });
+
+  describe("When loadPendingOrders is invoked and an internal server error occurres", () => {
+    test("Then it should call it's next method", async () => {
+      const customError = new CustomError(
+        "Error loading data...",
+        500,
+        "Error loading data..."
+      );
+
+      const req: Partial<Request> = {};
+
+      Admin.findOne = jest.fn().mockRejectedValue(customError);
+      await loadPendingOrders(
+        req as Request,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(customError);
+    });
+  });
+
+  describe("When acceptOrder is invoked", () => {
+    test("Then it should return a 200 status", async () => {
+      const status = 200;
+      const req: Partial<Request> = {
+        params: { id: "admin" },
+      };
+
+      Admin.findOne = jest.fn().mockReturnValue(adminData);
+      Admin.findOneAndUpdate = jest.fn().mockReturnValue(adminData);
+      await acceptOrder(req as Request, res as Response, next as NextFunction);
+
+      expect(res.status).toHaveBeenCalledWith(status);
+    });
+  });
+
+  describe("When cancelOrder is invoked", () => {
+    test("Then it should return a 200 status", async () => {
+      const status = 200;
+      const req: Partial<Request> = {
+        params: { id: "admin" },
+      };
+
+      Admin.findOne = jest.fn().mockReturnValue(adminData);
+      Admin.findOneAndUpdate = jest.fn().mockReturnValue(adminData);
+      await cancelOrder(req as Request, res as Response, next as NextFunction);
+
+      expect(res.status).toHaveBeenCalledWith(status);
+    });
+  });
+
+  describe("When acceptOrder is invoked and an internal server error ocurres", () => {
+    test("Then it should call it's next method", async () => {
+      const req: Partial<Request> = {
+        params: { id: "admin" },
+      };
+
+      const error = new CustomError(
+        "Error accepting order...",
+        500,
+        "Error accepting order..."
+      );
+
+      Admin.findOne = jest.fn().mockReturnValue(adminData);
+      Admin.findOneAndUpdate = jest.fn().mockRejectedValue(error);
+      await acceptOrder(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalled();
+    });
+  });
+
+  describe("When cancelOrder is invoked and an internal server error ocurres", () => {
+    test("Then it should call it's next method", async () => {
+      const req: Partial<Request> = {
+        params: { id: "admin" },
+      };
+
+      const error = new CustomError(
+        "Error cancelling order...",
+        500,
+        "Error cancelling order..."
+      );
+
+      Admin.findOne = jest.fn().mockReturnValue(adminData);
+      Admin.findOneAndUpdate = jest.fn().mockRejectedValue(error);
+      await acceptOrder(req as Request, res as Response, next as NextFunction);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });
