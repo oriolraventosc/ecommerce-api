@@ -1,7 +1,6 @@
 import enviroment from "../../../loadEnviroment.js";
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import type {
   Credentials,
   Product,
@@ -31,19 +30,9 @@ export const adminLogin = async (
   }
 
   try {
-    const admin = await Admin.findOne({ username });
+    const admin = await Admin.findOne({ username, password });
 
     if (!admin) {
-      const customError = new CustomError(
-        "Wrong credentials!",
-        401,
-        "Wrong credentials!"
-      );
-      next(customError);
-      return;
-    }
-
-    if (!(await bcrypt.compare(password, admin.password))) {
       const customError = new CustomError(
         "Wrong credentials!",
         401,
