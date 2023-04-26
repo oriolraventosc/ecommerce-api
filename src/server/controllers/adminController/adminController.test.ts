@@ -26,11 +26,10 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Product.deleteMany({});
+  await Admin.deleteMany({});
 });
 
 afterAll(async () => {
-  await Admin.deleteMany({});
-  await Product.deleteMany({});
   await mongoose.disconnect();
   await server.stop();
 });
