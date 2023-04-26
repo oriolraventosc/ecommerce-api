@@ -29,6 +29,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  await Admin.deleteMany({});
   await Product.deleteMany({});
   await mongoose.disconnect();
   await server.stop();
