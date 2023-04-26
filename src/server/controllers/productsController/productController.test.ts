@@ -19,11 +19,10 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await Product.deleteMany({});
+  await Admin.deleteMany({});
 });
 
 afterAll(async () => {
-  await Product.deleteMany({});
-  await Admin.deleteMany({});
   await mongoose.disconnect();
   await server.stop();
 });
